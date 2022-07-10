@@ -1,6 +1,8 @@
 import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import { RichText } from 'prismic-dom';
+import { FiCalendar, FiUser } from 'react-icons/fi';
+import { Header } from '../../components/Header';
 
 import { getPrismicClient } from '../../services/prismic';
 
@@ -39,9 +41,29 @@ export default function Post({ post }: PostProps): React.ReactElement {
     );
 
   return (
-    <main className={commonStyles.container}>
-      <h1>teste</h1>
-    </main>
+    <>
+      <div className={styles.headerContent}>
+        <Header />
+      </div>
+      <img className={styles.banner} src={post.data.banner.url} alt="banner" />
+      <main className={commonStyles.container}>
+        <div className={styles.contentContainer}>
+          <div className={styles.postWrapper}>
+            <h1>{post.data.title}</h1>
+            <div className={styles.postDetails}>
+              <FiCalendar className={styles.calendarIcon} />
+              <span>{post.first_publication_date}</span>
+              <FiUser />
+              <span>{post.data.author}</span>
+            </div>
+
+            <div className={styles.postContent}>
+              {post.data.content[0].body[0].text}
+            </div>
+          </div>
+        </div>
+      </main>
+    </>
   );
 }
 
@@ -74,12 +96,16 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       banner: {
         url: postsResponse.data.banner.url,
       },
-      content: {
-        body: {
-          heading: postsResponse.data.content[0].heading,
-          text: postsResponse.data.content[0].body[0].text,
+      content: [
+        {
+          body: [
+            {
+              heading: postsResponse.data.content[0].heading,
+              text: postsResponse.data.content[0].body[0].text,
+            },
+          ],
         },
-      },
+      ],
     },
   };
 

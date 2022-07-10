@@ -5,21 +5,6 @@
   margin-top: 3rem;
 }
 
-.headerContent {
-  display: flex;
-  line-height: 1.25rem;
-
-  h2 {
-    font-size: 2rem;
-    color: var(--white);
-  }
-  
-  span {
-    font-size: 2rem;
-    color: var(--pink-600);
-  }
-}
-
 .postsContent {
   display: flex;
   flex-direction: column;
