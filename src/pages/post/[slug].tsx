@@ -1,4 +1,6 @@
-import { GetStaticPaths, GetStaticProps } from 'next';
+import { GetStaticProps } from 'next';
+import { useRouter } from 'next/router';
+import { RichText } from 'prismic-dom';
 
 import { getPrismicClient } from '../../services/prismic';
 
@@ -26,20 +28,64 @@ interface PostProps {
   post: Post;
 }
 
-// export default function Post() {
-//   // TODO
-// }
+export default function Post({ post }: PostProps): React.ReactElement {
+  const router = useRouter();
 
-// export const getStaticPaths = async () => {
-//   const prismic = getPrismicClient({});
-//   const posts = await prismic.getByType(TODO);
+  if (router.isFallback)
+    return (
+      <main className={commonStyles.container}>
+        <div className={styles.loadingText}>Carregando...</div>
+      </main>
+    );
 
-//   // TODO
-// };
+  return (
+    <main className={commonStyles.container}>
+      <h1>teste</h1>
+    </main>
+  );
+}
 
-// export const getStaticProps = async ({params }) => {
-//   const prismic = getPrismicClient({});
-//   const response = await prismic.getByUID(TODO);
+export const getStaticPaths = () => {
+  return {
+    paths: [],
+    fallback: true,
+  };
+};
 
-//   // TODO
-// };
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const prismic = getPrismicClient({});
+  const { slug } = params;
+  const postsResponse = await prismic.getByUID('posts', String(slug), {});
+
+  const post = {
+    uid: postsResponse.slugs[0],
+    first_publication_date: new Date(postsResponse.first_publication_date)
+      .toLocaleString('pt-BR', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+      })
+      .replace(/de/g, '')
+      .replace('.', '')
+      .replace(/\s+/g, ' '),
+    data: {
+      title: postsResponse.data.title,
+      author: postsResponse.data.author,
+      banner: {
+        url: postsResponse.data.banner.url,
+      },
+      content: {
+        body: {
+          heading: postsResponse.data.content[0].heading,
+          text: postsResponse.data.content[0].body[0].text,
+        },
+      },
+    },
+  };
+
+  return {
+    props: {
+      post,
+    },
+  };
+};

@@ -1,1 +1,72 @@
-// TODO
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+.headerContent {
+  display: flex;
+  line-height: 1.25rem;
+
+  h2 {
+    font-size: 2rem;
+    color: var(--white);
+  }
+  
+  span {
+    font-size: 2rem;
+    color: var(--pink-600);
+  }
+}
+
+.postsContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 4rem;
+
+  .postContent {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 4rem;
+
+    h1 {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: var(--white);
+
+      &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+  
+    .subtitle {
+      font-size: 1rem;
+      color: var(--white);
+      margin-top: 0.6rem;
+    }
+  
+    .postDetails {
+      display: flex;
+      font-size: 0.8rem;
+      color: var(--gray-400);
+      margin-top: 0.8rem;
+      align-items: center;
+      justify-content: flex-start;
+
+      svg {
+        margin-right: 0.3rem;
+      }
+
+      span {
+        font-size: 0.9rem;
+      }
+
+      div:first-child {
+        margin-right: 0.8rem;
+      }
+    }
+  }
+}
